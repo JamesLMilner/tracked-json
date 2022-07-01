@@ -1,6 +1,6 @@
 {
   "name": "tracked-json",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Frictionless undo/redo for JSON objects",
   "type": "module",
   "source": "src/tracked-json.ts",
@@ -19,7 +19,7 @@
     "docs": "typedoc src/tracked-json.ts --options typedoc.json",
     "docs:serve": "serve ./docs"
   },
-  "author": "",
+  "author": "James Milner",
   "license": "MIT",
   "dependencies": {
     "rfc6902": "^5.0.1"
