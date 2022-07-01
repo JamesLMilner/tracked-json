@@ -5,7 +5,7 @@ type TrackedJSONListener = Record<string, (() => void)[]>;
 
 type JSON = string | number | boolean | null | JSONArray | JSONObject;
 
-export interface JSONObject {
+interface JSONObject {
   [member: string]: JSON;
 }
 interface JSONArray extends Array<JSON> {}
@@ -18,7 +18,15 @@ export class TrackedJSON<T extends JSONObject> {
     this._data = new Proxy(this.obj as object, this.handler) as T;
   }
 
-  public addEventListener(eventName: TrackedJSONEvent, callback: () => void) {
+  /**
+   * Adds an event listener to the TrackedJSON instance -
+   * currenlty only 'change' is supported that triggers every
+   * time any part of the data object changes
+   */
+  public addEventListener(
+    eventName: TrackedJSONEvent,
+    callback: () => void
+  ): void {
     if (
       Array.isArray(this.listeners[eventName]) &&
       !this.listeners[eventName].includes(callback)
@@ -27,10 +35,14 @@ export class TrackedJSON<T extends JSONObject> {
     }
   }
 
+  /**
+   * Removes an event listener to the TrackedJSON instance -
+   * currenlty only 'change' is supporte.
+   **/
   public removeEventListener(
     eventName: TrackedJSONEvent,
     callback: () => void
-  ) {
+  ): void {
     if (Array.isArray(this.listeners[eventName])) {
       const index = this.listeners[eventName].indexOf(callback);
       if (index !== -1) {
@@ -39,6 +51,7 @@ export class TrackedJSON<T extends JSONObject> {
     }
   }
 
+  /** The tracked data object to manipulate */
   public get data(): T {
     return this._data;
   }
@@ -72,7 +85,11 @@ export class TrackedJSON<T extends JSONObject> {
     }
   }
 
-  public undo() {
+  /**
+   * Moves the data property back to the state it was in
+   * before the previous change
+   **/
+  public undo(): void {
     if (this.undos.length === 0) {
       return;
     }
@@ -89,7 +106,11 @@ export class TrackedJSON<T extends JSONObject> {
     this.redos.push(redo);
   }
 
-  public redo() {
+  /**
+   * Moves the data property forward to the state it was in
+   * before the the last call of undo
+   **/
+  public redo(): void {
     if (this.redos.length === 0) {
       return;
     }
@@ -112,7 +133,11 @@ export class TrackedJSON<T extends JSONObject> {
     this.undos.push(undo);
   }
 
-  public clone(operation?: number) {
+  /**
+   * Clones the object at a given point in it's history. No argument clones
+   * the current state of the data object
+   **/
+  public clone(operation?: number): T {
     // Clone the current state of the object
     if (operation === undefined) {
       return this.cloneJSONObject(this.obj);
@@ -157,18 +182,27 @@ export class TrackedJSON<T extends JSONObject> {
     }
   }
 
-  get undoSize() {
+  /**
+   * Returns the current number of times undo can be called
+   **/
+  get undoSize(): number {
     return this.patches.length;
   }
 
   set undoSize(val) {}
 
-  get redoSize() {
+  /**
+   * Returns the current number of times redo can be called
+   **/
+  get redoSize(): number {
     return this.redos.length;
   }
 
   set redoSize(val) {}
 
+  /**
+   * Returns the current number of times undo can be called
+   **/
   public listeners: TrackedJSONListener = { change: [] };
 
   private _data: T;

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "exclude": [
+    "examples/**/**",
+    "bench/**/**",
+    "dist/**/**",
+    "node_modules/**/**"
+  ],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true
+}

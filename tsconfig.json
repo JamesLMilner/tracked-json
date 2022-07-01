@@ -5,5 +5,5 @@
     "jsx": "preserve",
     "sourceMap": true
   },
-  "exclude": ["node_modules", "**/node_modules/*"]
+  "exclude": ["node_modules", "**/node_modules/*", "examples", "dist", "bench"]
 }

@@ -15,19 +15,23 @@
     "benchmark": "esno bench/benchmark.ts",
     "test": "jest",
     "build": "microbundle",
-    "build:dev": "microbundle watch"
+    "build:dev": "microbundle watch",
+    "docs": "typedoc src/tracked-json.ts --options typedoc.json",
+    "docs:serve": "serve ./docs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rfc6902": "^5.0.1"
+    "rfc6902": "^5.0.1",
+    "typedoc": "^0.23.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
+    "esno": "^0.16.3",
     "jest": "^27.5.1",
     "microbundle": "^0.14.2",
+    "serve": "^13.0.2",
     "ts-jest": "^27.1.4",
-    "esno": "^0.16.3",
     "typescript": "^4.6.3"
   },
   "jest": {
