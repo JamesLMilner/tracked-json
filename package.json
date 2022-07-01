@@ -1,0 +1,37 @@
+{
+  "name": "tracked-json",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "source": "src/tracked-json.ts",
+  "exports": {
+    "require": "./dist/tracked-json.cjs",
+    "default": "./dist/tracked-json.modern.js"
+  },
+  "main": "./dist/tracked-json.cjs",
+  "module": "./dist/tracked-json.module.js",
+  "unpkg": "./dist/tracked-json.umd.js",
+  "scripts": {
+    "benchmark": "esno bench/benchmark.ts",
+    "test": "jest",
+    "build": "microbundle",
+    "build:dev": "microbundle watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rfc6902": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
+    "microbundle": "^0.14.2",
+    "ts-jest": "^27.1.4",
+    "esno": "^0.16.3",
+    "typescript": "^4.6.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
+}
