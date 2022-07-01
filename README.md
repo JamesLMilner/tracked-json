@@ -1,8 +1,10 @@
 # TrackedJSON
 
-TrackedJSON is a library that allows manipulate an object composed of valid JSON types, whilst allowing you to rewind and replay history of that object with `undo` and `redo`.
+TrackedJSON is a library that allows manipulate an object composed of valid JSON types, whilst providing a nice way to rewind and replay history of that object with `undo` and `redo` methods.
 
-TrackedJSON tries to maintain a relatively minimal API - the core of the library is the `.data` property which is where you can maniplulate your data that you want to keep track of. This is just a plain JavaScript object which you can use like so:
+TrackedJSON tries to maintain a relatively minimal API - the core of the library is the `.data` property which is where you can maniplulate your data that you want to keep track of. You can update it just like a regular JavaScript object, with the only requirement being that properties have to be valid JSON types.
+
+You can use it like so:
 
 ```javascript
 const tracked = new TrackedJSON();

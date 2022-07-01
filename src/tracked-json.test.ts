@@ -504,39 +504,4 @@ describe("TrackJSON", () => {
       expect(tracked.redoSize).toBe(2);
     });
   });
-
-  describe("event listeners", () => {
-    describe("change", () => {
-      it("adds event listener and triggers on data change", () => {
-        const tracked = new TrackedJSON();
-
-        const mockCallback = jest.fn();
-        tracked.addEventListener("change", mockCallback);
-
-        expect(tracked.listeners["change"].length).toBe(1);
-
-        tracked.data.value = 1;
-
-        expect(mockCallback).toBeCalledTimes(1);
-      });
-
-      it("adds event listener and triggers on data change", () => {
-        const tracked = new TrackedJSON();
-
-        const mockCallback = jest.fn();
-        tracked.addEventListener("change", mockCallback);
-
-        const { data } = tracked;
-        data.value = 1;
-
-        expect(mockCallback).toBeCalledTimes(1);
-
-        tracked.removeEventListener("change", mockCallback);
-
-        data.value = 2;
-
-        expect(mockCallback).toBeCalledTimes(1);
-      });
-    });
-  });
 });

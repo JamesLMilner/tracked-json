@@ -20,10 +20,9 @@
     "docs:serve": "serve ./docs"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "rfc6902": "^5.0.1",
-    "typedoc": "^0.23.2"
+    "rfc6902": "^5.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
@@ -32,7 +31,8 @@
     "microbundle": "^0.14.2",
     "serve": "^13.0.2",
     "ts-jest": "^27.1.4",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "typedoc": "^0.23.2"
   },
   "jest": {
     "preset": "ts-jest",

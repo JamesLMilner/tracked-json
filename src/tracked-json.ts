@@ -18,39 +18,6 @@ export class TrackedJSON<T extends JSONObject> {
     this._data = new Proxy(this.obj as object, this.handler) as T;
   }
 
-  /**
-   * Adds an event listener to the TrackedJSON instance -
-   * currenlty only 'change' is supported that triggers every
-   * time any part of the data object changes
-   */
-  public addEventListener(
-    eventName: TrackedJSONEvent,
-    callback: () => void
-  ): void {
-    if (
-      Array.isArray(this.listeners[eventName]) &&
-      !this.listeners[eventName].includes(callback)
-    ) {
-      this.listeners[eventName].push(callback);
-    }
-  }
-
-  /**
-   * Removes an event listener to the TrackedJSON instance -
-   * currenlty only 'change' is supporte.
-   **/
-  public removeEventListener(
-    eventName: TrackedJSONEvent,
-    callback: () => void
-  ): void {
-    if (Array.isArray(this.listeners[eventName])) {
-      const index = this.listeners[eventName].indexOf(callback);
-      if (index !== -1) {
-        this.listeners[eventName].splice(index);
-      }
-    }
-  }
-
   /** The tracked data object to manipulate */
   public get data(): T {
     return this._data;
@@ -77,12 +44,6 @@ export class TrackedJSON<T extends JSONObject> {
     this._data = new Proxy(this.obj as object, this.handler) as T;
 
     this.createPatches(preMutatedObj);
-
-    if (this.listeners["change"].length) {
-      this.listeners["change"].forEach((listener) => {
-        listener();
-      });
-    }
   }
 
   /**
@@ -136,24 +97,26 @@ export class TrackedJSON<T extends JSONObject> {
   /**
    * Clones the object at a given point in it's history. No argument clones
    * the current state of the data object
+   * @param at - The position in the history stack to clone at. Positive numbers are from
+   * initialisation and negative numbers from current object state
    **/
-  public clone(operation?: number): T {
+  public clone(at?: number): T {
     // Clone the current state of the object
-    if (operation === undefined) {
+    if (at === undefined) {
       return this.cloneJSONObject(this.obj);
     }
 
-    if (operation === 0) {
+    if (at === 0) {
       // Clone the original object
       return this.cloneJSONObject(this.initialObj);
-    } else if (operation >= 0) {
-      if (operation > this.patches.length - 1) {
+    } else if (at >= 0) {
+      if (at > this.patches.length - 1) {
         throw new Error(
           "Positive input can't be more than the number of patches"
         );
       }
 
-      const patchesToApply = this.patches.slice(0, operation);
+      const patchesToApply = this.patches.slice(0, at);
 
       const resultObj = this.cloneJSONObject(this.initialObj);
 
@@ -162,8 +125,8 @@ export class TrackedJSON<T extends JSONObject> {
       });
 
       return resultObj;
-    } else if (operation < 0) {
-      const patchIndex = this.patches.length + operation;
+    } else if (at < 0) {
+      const patchIndex = this.patches.length + at;
 
       if (patchIndex < 0) {
         throw new Error(
@@ -199,11 +162,6 @@ export class TrackedJSON<T extends JSONObject> {
   }
 
   set redoSize(val) {}
-
-  /**
-   * Returns the current number of times undo can be called
-   **/
-  public listeners: TrackedJSONListener = { change: [] };
 
   private _data: T;
   private obj: JSONObject;
@@ -335,12 +293,6 @@ export class TrackedJSON<T extends JSONObject> {
 
         // Mutate the object (set)
         target[prop] = value;
-
-        if (this.listeners["change"].length) {
-          this.listeners["change"].forEach((listener) => {
-            listener();
-          });
-        }
 
         this.createPatches(preMutatedObj);
 
