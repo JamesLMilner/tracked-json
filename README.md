@@ -36,6 +36,12 @@ tracked.redo();
 // tracked.data.value === 3
 ```
 
+## Docs
+
+[See the docs here](https://jameslmilner.github.io/tracked-json/)
+
+Common questions answered on usage:
+
 ### How many undo/redo operations are there for my data object?
 
 You can get the size of the undo stack using `undoSize` like so:
@@ -50,7 +56,7 @@ tracked.undo();
 console.log(tracked.redoSize); // 2
 ```
 
-### Instantiate with a given state
+### How do I instantiate with a given state?
 
 You can instantiate an object with a starting state like so:
 
@@ -59,7 +65,7 @@ const tracked = new TrackedJSON({ initialState: { value: 0 } });
 console.log(tracked.data.value); // 0
 ```
 
-### Replacing the whole data object
+### Can I replace the whole data object with a new one?
 
 If you want to replace the whole data object, this is possible and will be tracked as normal, like so:
 
@@ -71,14 +77,19 @@ tracked.undo();
 console.log(tracked.data.value); // 0
 ```
 
-### Guards against non JSON properties
+### Do I need to guard against non JSON?
 
-Properties and nested properties of the data object must be valid JSON and will throw an error if not:
+Properties and nested properties of the data object must be valid JSON. Attempting to set non valid JSON properties and will throw an error like so:
 
 ```javascript
 const tracked = new TrackedJSON();
-tracked.data.value = new Map(); // throws error
 tracked.data.value = {}; // does not throw error
+tracked.data.value = 1; // does not throw error
+tracked.data.value = []; // does not throw error
+tracked.data.value = "string"; // does not throw error
+tracked.data.value = true; // does not throw error
+
+tracked.data.value = new Map(); // throws error
 ```
 
 # License
