@@ -1,6 +1,13 @@
 {
   "name": "tracked-json",
   "version": "0.0.2",
+  "keywords": [
+    "json",
+    "tracked",
+    "history",
+    "undo",
+    "redo"
+  ],
   "description": "Frictionless undo/redo for JSON objects",
   "type": "module",
   "source": "src/tracked-json.ts",

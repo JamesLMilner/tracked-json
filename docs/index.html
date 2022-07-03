@@ -14,19 +14,49 @@
 <a href="#trackedjson" id="trackedjson" style="color: inherit; text-decoration: none;">
   <h1>TrackedJSON</h1>
 </a>
-<p>TrackedJSON is a library that allows manipulate an object composed of valid JSON types, whilst providing a nice way to rewind and replay history of that object with <code>undo</code> and <code>redo</code> methods.</p>
-<p>TrackedJSON tries to maintain a relatively minimal API - the core of the library is the <code>.data</code> property which is where you can maniplulate your data that you want to keep track of. You can update it just like a regular JavaScript object, with the only requirement being that properties have to be valid JSON types.</p>
-<p>You can use it like so:</p>
-<pre><code class="language-javascript"><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">tracked</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">TrackedJSON</span><span class="hl-1">();</span><br/><br/><span class="hl-4">// tracked.data is an empty object at this point</span><br/><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-5">data</span><span class="hl-1">.</span><span class="hl-5">value</span><span class="hl-1"> = </span><span class="hl-6">1</span><span class="hl-1">;</span><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-5">data</span><span class="hl-1">.</span><span class="hl-5">value</span><span class="hl-1"> = </span><span class="hl-6">2</span><span class="hl-1">;</span><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-5">data</span><span class="hl-1">.</span><span class="hl-5">value</span><span class="hl-1"> = </span><span class="hl-6">3</span><span class="hl-1">;</span>
-</code></pre>
-<p>There are two other methods which are the core part of TrackedJSON API, namely <code>undo</code> and <code>redo</code>. They work like this:</p>
-<pre><code class="language-javascript"><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-3">undo</span><span class="hl-1">();</span><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-3">undo</span><span class="hl-1">();</span><br/><br/><span class="hl-4">// tracked.data.value === 1</span><br/><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-3">redo</span><span class="hl-1">();</span><br/><span class="hl-5">tracked</span><span class="hl-1">.</span><span class="hl-3">redo</span><span class="hl-1">();</span><br/><br/><span class="hl-4">// tracked.data.value === 3</span>
-</code></pre>
+<p><img src="https://github.com/JamesLMilner/tracked-json/actions/workflows/ci.yml/badge.svg" alt="TackedJSON CI"></p>
+<p>TrackedJSON provides frictionless undo/redo for JSON objects.</p>
+<p>TrackedJSON tries to maintain a relatively minimal API - the core of the library is the <code>.data</code> property which represents the JSON object you want to keep track of. You can update it just like a regular JavaScript object, with the only requirement being that properties have to be valid JSON types.</p>
 
 <a href="#install" id="install" style="color: inherit; text-decoration: none;">
   <h2>Install</h2>
 </a>
-<pre><code><span class="hl-5">npm</span><span class="hl-1"> </span><span class="hl-5">install</span><span class="hl-1"> </span><span class="hl-5">tracked</span><span class="hl-1">-</span><span class="hl-5">json</span>
+<pre><code class="language-shell"><span class="hl-0">npm install tracked-json</span>
+</code></pre>
+
+<a href="#basic-usage" id="basic-usage" style="color: inherit; text-decoration: none;">
+  <h2>Basic Usage</h2>
+</a>
+<p>You can use it like so:</p>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">tracked</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">TrackedJSON</span><span class="hl-0">();</span><br/><br/><span class="hl-4">// tracked.data is an empty object at this point</span><br/><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">1</span><span class="hl-0">;</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">2</span><span class="hl-0">;</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">3</span><span class="hl-0">;</span><br/><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">undo</span><span class="hl-0">();</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">undo</span><span class="hl-0">();</span><br/><br/><span class="hl-4">// tracked.data.value === 1</span><br/><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">redo</span><span class="hl-0">();</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">redo</span><span class="hl-0">();</span><br/><br/><span class="hl-4">// tracked.data.value === 3</span>
+</code></pre>
+
+<a href="#how-many-undoredo-operations-are-there-for-my-data-object" id="how-many-undoredo-operations-are-there-for-my-data-object" style="color: inherit; text-decoration: none;">
+  <h3>How many undo/redo operations are there for my data object?</h3>
+</a>
+<p>You can get the size of the undo stack using <code>undoSize</code> like so:</p>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">tracked</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">TrackedJSON</span><span class="hl-0">({ </span><span class="hl-5">initialState:</span><span class="hl-0"> { </span><span class="hl-5">value:</span><span class="hl-0"> </span><span class="hl-6">0</span><span class="hl-0"> } });</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">1</span><span class="hl-0">;</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">2</span><span class="hl-0">;</span><br/><span class="hl-5">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">undoSize</span><span class="hl-0">); </span><span class="hl-4">// 2</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">undo</span><span class="hl-0">();</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">undo</span><span class="hl-0">();</span><br/><span class="hl-5">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">redoSize</span><span class="hl-0">); </span><span class="hl-4">// 2</span>
+</code></pre>
+
+<a href="#instantiate-with-a-given-state" id="instantiate-with-a-given-state" style="color: inherit; text-decoration: none;">
+  <h3>Instantiate with a given state</h3>
+</a>
+<p>You can instantiate an object with a starting state like so:</p>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">tracked</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">TrackedJSON</span><span class="hl-0">({ </span><span class="hl-5">initialState:</span><span class="hl-0"> { </span><span class="hl-5">value:</span><span class="hl-0"> </span><span class="hl-6">0</span><span class="hl-0"> } });</span><br/><span class="hl-5">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0">); </span><span class="hl-4">// 0</span>
+</code></pre>
+
+<a href="#replacing-the-whole-data-object" id="replacing-the-whole-data-object" style="color: inherit; text-decoration: none;">
+  <h3>Replacing the whole data object</h3>
+</a>
+<p>If you want to replace the whole data object, this is possible and will be tracked as normal, like so:</p>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">tracked</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">TrackedJSON</span><span class="hl-0">();</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-6">0</span><span class="hl-0">;</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0"> = { </span><span class="hl-5">value:</span><span class="hl-0"> </span><span class="hl-6">1</span><span class="hl-0"> };</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-3">undo</span><span class="hl-0">();</span><br/><span class="hl-5">console</span><span class="hl-0">.</span><span class="hl-3">log</span><span class="hl-0">(</span><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0">); </span><span class="hl-4">// 0</span>
+</code></pre>
+
+<a href="#guards-against-non-json-properties" id="guards-against-non-json-properties" style="color: inherit; text-decoration: none;">
+  <h3>Guards against non JSON properties</h3>
+</a>
+<p>Properties and nested properties of the data object must be valid JSON and will throw an error if not:</p>
+<pre><code class="language-javascript"><span class="hl-1">const</span><span class="hl-0"> </span><span class="hl-2">tracked</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-3">TrackedJSON</span><span class="hl-0">();</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-1">new</span><span class="hl-0"> </span><span class="hl-7">Map</span><span class="hl-0">(); </span><span class="hl-4">// throws error</span><br/><span class="hl-5">tracked</span><span class="hl-0">.</span><span class="hl-5">data</span><span class="hl-0">.</span><span class="hl-5">value</span><span class="hl-0"> = {}; </span><span class="hl-4">// does not throw error</span>
 </code></pre>
 
 <a href="#license" id="license" style="color: inherit; text-decoration: none;">

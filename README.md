@@ -2,7 +2,7 @@
 
 ![TackedJSON CI](https://github.com/JamesLMilner/tracked-json/actions/workflows/ci.yml/badge.svg)
 
-TrackedJSON provides frictionless undo/redo for JSON objects.
+TrackedJSON is a JavaScript library which provides frictionless undo/redo for JSON objects.
 
 TrackedJSON tries to maintain a relatively minimal API - the core of the library is the `.data` property which represents the JSON object you want to keep track of. You can update it just like a regular JavaScript object, with the only requirement being that properties have to be valid JSON types.
 
