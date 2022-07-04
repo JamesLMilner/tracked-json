@@ -67,6 +67,14 @@ describe("TrackJSON", () => {
       }).toThrowError();
     });
 
+    it("does not allow Maps", () => {
+      const tracked = new TrackedJSON();
+
+      expect(() => {
+        tracked.data.value = new Map() as any;
+      }).toThrowError();
+    });
+
     it("does not allow Infinity", () => {
       const tracked = new TrackedJSON();
 
@@ -202,6 +210,43 @@ describe("TrackJSON", () => {
       tracked.undo();
       expect(tracked.undoSize).toBe(0);
       expect(Object.keys(tracked.data).length).toBe(0);
+    });
+
+    it("throws error if new data object is not valid JSON", () => {
+      const tracked = new TrackedJSON();
+      expect(() => {
+        tracked.data = { value: new Map() } as any;
+      }).toThrowError();
+
+      expect(() => {
+        tracked.data = { value: [new Map()] } as any;
+      }).toThrowError();
+
+      expect(() => {
+        tracked.data = { value: { nested: new Map() } } as any;
+      }).toThrowError();
+    });
+
+    it("throws error if property is a Symbol when setting", () => {
+      const tracked = new TrackedJSON();
+      const symbol = Symbol();
+
+      expect(() => {
+        tracked.data[symbol as any] = true;
+      }).toThrowError();
+
+      expect(() => {
+        delete tracked.data[symbol as any];
+      }).toThrowError();
+    });
+
+    it("throws error if property is a Symbol when deleting", () => {
+      const tracked = new TrackedJSON();
+      const symbol = Symbol();
+
+      expect(() => {
+        delete tracked.data[symbol as any];
+      }).toThrowError();
     });
   });
 
@@ -456,6 +501,27 @@ describe("TrackJSON", () => {
       tracked.redo();
 
       expect(tracked.data.value).toBe(undefined);
+    });
+
+    it("can redo when no redos available is a no op", () => {
+      const tracked = new TrackedJSON();
+
+      tracked.data.value = 1;
+      tracked.data.value = 2;
+
+      tracked.undo();
+
+      tracked.redo();
+
+      expect(tracked.data.value).toBe(2);
+
+      expect(tracked.redoSize).toBe(0);
+
+      tracked.redo();
+
+      expect(tracked.redoSize).toBe(0);
+
+      expect(tracked.data.value).toBe(2);
     });
   });
 

@@ -21,6 +21,7 @@
   "scripts": {
     "benchmark": "esno bench/benchmark.ts",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "build": "microbundle",
     "build:dev": "microbundle watch",
     "docs": "typedoc src/tracked-json.ts --options typedoc.json",

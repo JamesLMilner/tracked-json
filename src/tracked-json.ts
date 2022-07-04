@@ -178,6 +178,7 @@ export class TrackedJSON<T extends JSONObject> {
     }
 
     if (typeof value === "number") {
+      // Ensure is not infinity, -infinity or NaN
       if (value === Infinity || value === -Infinity || isNaN(value)) {
         return false;
       } else {
@@ -188,19 +189,21 @@ export class TrackedJSON<T extends JSONObject> {
     if (typeof value === "object") {
       if (value === null) {
         return true;
-      } else if (
-        value.constructor === {}.constructor ||
-        value.constructor === [].constructor
-      ) {
-        // We could possibly call this function recursively instead,
-        // I wonder if it's faster?
-        try {
-          JSON.parse(JSON.stringify(value));
-
-          return true;
-        } catch (error) {
-          return false;
+      } else if (Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          if (!this.isJSONType(value[i])) {
+            return false;
+          }
         }
+        return true;
+      } else if (value.constructor === {}.constructor) {
+        const keys = Object.keys(value);
+        for (let i = 0; i < keys.length; i++) {
+          if (!this.isJSONType(value[keys[i]])) {
+            return false;
+          }
+        }
+        return true;
       }
     }
 
