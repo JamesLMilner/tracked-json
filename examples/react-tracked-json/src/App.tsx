@@ -35,21 +35,11 @@ function getColorCode() {
   const color = getHSL({ h, s: 0.4, l: 0.5 });
   const invert = getHSL({ h: invertH, s: 0.4, l: 0.5 });
 
-  // console.log(h, 40, 50, HexToHSL(HSLToHex(h, 40, 50)));
-
-  // console.log(hslToHex(h, 40, 50), hslToHex(invertH, 40, 50));
-
   return {
     color,
     invert,
   };
 }
-
-// function getHueFromHSL(hslString: string): number {
-//   return parseInt(
-//     hslString.split("hsl")[1].replace("(", "").replace(")", "").split("deg")[0]
-//   );
-// }
 
 function getRandomSquare() {
   const { color, invert } = getColorCode();
@@ -59,7 +49,6 @@ function getRandomSquare() {
     width: 500,
     height: 500,
     border: `solid 10px ${invert}`,
-    // borderRadius: `${Math.floor(Math.random() * 20)}px`,
     color: invert,
     fontSize: "16px",
     display: "flex",
@@ -74,21 +63,21 @@ function useTrackedJSON() {
     () => new TrackedJSON({ initialState: getRandomSquare() }),
     []
   );
-  const [, setActionCount] = useState(0);
+  const [value, setValue] = useState(tracked.clone());
 
   return {
-    value: tracked.clone(),
+    value,
     set: (styles: React.CSSProperties) => {
       tracked.data = styles;
-      setActionCount((count) => count + 1);
+      setValue(tracked.clone());
     },
     undo: () => {
       tracked.undo();
-      setActionCount((count) => count + 1);
+      setValue(tracked.clone());
     },
     redo: () => {
       tracked.redo();
-      setActionCount((count) => count + 1);
+      setValue(tracked.clone());
     },
     undoSize: tracked.undoSize,
     redoSize: tracked.redoSize,
