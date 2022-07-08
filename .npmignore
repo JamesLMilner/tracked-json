@@ -2,3 +2,5 @@
 bench
 examples
 docs
+coverage
+.github
